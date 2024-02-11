@@ -1,8 +1,6 @@
 using System;
-using System.Net;
 using System.Threading.Tasks;
 using Domain.Model;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Services.Interface;
 
@@ -26,7 +24,7 @@ public class FileManagerController(IFileManager fileManager) : Controller
     public async Task<IActionResult> DownloadFile(Guid id)
     {
         var result = await fileManager.DownloadFile(id);
-        return File(result.Item1, result.Item2, result.Item2);
+        return Json(result);
     }
 
 }

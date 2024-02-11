@@ -66,7 +66,7 @@ public class FileManager(IFileModelRepository repository) : IFileManager
         return model.Id.ToString();
     }
 
-    public async Task<(byte[], string, string)> DownloadFile(Guid id)
+    public async Task<FileModel> DownloadFile(Guid id)
     {
         var model = repository.GetById(id);
         if (model == null)
@@ -83,6 +83,6 @@ public class FileManager(IFileModelRepository repository) : IFileManager
             contentType = "application/octet-stream";
         }
         var bytes = await File.ReadAllBytesAsync(filePath);*/
-        return (model.Content, model.ContentType, model.Name);
+        return model;
     }
 }

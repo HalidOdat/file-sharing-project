@@ -1,53 +1,54 @@
 <script lang="ts">
-  import axios, {isCancel, AxiosError} from 'axios';
-  import type {AxiosProgressEvent} from 'axios';
-  import FileDrop from './FileDrop.svelte'
-  import { ProgressBar } from '@skeletonlabs/skeleton';
+  import axios, { isCancel, AxiosError } from "axios";
+  import type { AxiosProgressEvent } from "axios";
+  import FileDrop from "./FileDrop.svelte";
+  import { ProgressBar } from "@skeletonlabs/skeleton";
+  import AppBarState from "../stores/AppBarState";
 
   let uploaded = false;
   let files: FileList;
-  let promise: Promise<string> = Promise.resolve("Empty")
-  let progress = 0
-  let fileUrl = ""
+  let promise: Promise<string> = Promise.resolve("Empty");
+  let progress = 0;
+  let fileUrl = "";
 
-  const location = `https://localhost:5001/v1/api/file/upload`
+  const location = `https://localhost:5001/v1/api/file/upload`;
 
   const onChangeHandler = (e: Event): void => {
     // console.log('file data:', e, files, e.target.files[0]);
 
     let file = files.item(0);
-    promise = sendFile(file)
-    uploaded = true
-  }
+    promise = sendFile(file);
+    uploaded = true;
+  };
 
   const onCopy = () => {
-    navigator.clipboard.writeText(fileUrl)
-  }
+    navigator.clipboard.writeText(fileUrl);
+  };
 
   const sendFile = async (file: File): Promise<string> => {
     let formData = new FormData();
-    formData.append('fileName', file.name);
-    formData.append('formFile', file);
+    formData.append("fileName", file.name);
+    formData.append("formFile", file);
     let response = await axios.request({
-        method: "post",
-        url: location,
-        data: formData,
-        onUploadProgress: (p: AxiosProgressEvent) => {
-          console.log(p);
-          progress = Number(p.progress) * 100
-        }
+      method: "post",
+      url: location,
+      data: formData,
+      onUploadProgress: (p: AxiosProgressEvent) => {
+        console.log(p);
+        progress = Number(p.progress) * 100;
+      }
     });
-    const content = response.data
+    const content = response.data;
 
     console.log(content);
 
-    fileUrl = `${window.location.origin}/${content}`
-    return content
-  }
+    fileUrl = `${window.location.origin}/${content}`;
+    return content;
+  };
 </script>
 
 {#if !uploaded}
-  <FileDrop bind:files={files} onChange={onChangeHandler} />
+  <FileDrop bind:files onChange={onChangeHandler} />
 {:else}
   {#await promise}
     <ProgressBar label="Progress Bar" value={progress} max={100} />
@@ -60,6 +61,3 @@
     <p style="color: red">{error.message}</p>
   {/await}
 {/if}
-
-
-

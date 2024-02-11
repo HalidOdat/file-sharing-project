@@ -8,6 +8,7 @@
 
     <ItemGroup>
         <None Update="app.db" CopyToOutputDirectory="PreserveNewest" ExcludeFromSingleFile="true" />
+        <None Remove="Uploads\**" />
     </ItemGroup>
 
     <ItemGroup>
@@ -23,6 +24,7 @@
       <Content Include="..\.dockerignore">
         <Link>.dockerignore</Link>
       </Content>
+      <Content Remove="Uploads\**" />
     </ItemGroup>
 
     <ItemGroup>
@@ -33,6 +35,18 @@
 
     <ItemGroup>
       <Folder Include="Data\Migrations" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Remove="Uploads\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <EmbeddedResource Remove="Uploads\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <_ContentIncludedByDefault Remove="Uploads\StaticContent\Index.cshtml_638432433458349357.cshtml" />
     </ItemGroup>
 
 </Project>
