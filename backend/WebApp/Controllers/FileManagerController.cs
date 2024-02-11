@@ -8,8 +8,9 @@ using Services.Interface;
 
 namespace WebApp.Controllers;
 
-[Route("v1/file")]
+[Route("v1/api/file")]
 [ApiController]
+[Produces("application/json")]
 public class FileManagerController(IFileManager fileManager) : Controller
 {
     [HttpPost]
@@ -17,7 +18,7 @@ public class FileManagerController(IFileManager fileManager) : Controller
     public async Task<IActionResult> UploadFile([FromForm] FileFormModel fileForm)
     {
         var result = await fileManager.UploadFile(fileForm);
-        return Ok(result);
+        return Json(result);
     }
 
     [HttpGet]

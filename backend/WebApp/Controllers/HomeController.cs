@@ -9,10 +9,8 @@ using WebApp.Models;
 
 namespace WebApp.Controllers;
 
-public class HomeController(ILogger<HomeController> logger) : Controller
+public class HomeController(ILogger<HomeController> _logger) : Controller
 {
-    private readonly ILogger<HomeController> _logger = logger;
-
     public IActionResult Index()
     {
         return View();

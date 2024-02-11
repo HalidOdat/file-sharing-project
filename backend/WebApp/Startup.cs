@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Net.Http.Headers;
 using Repository;
 using Repository.Implementation;
 using Repository.Interface;
@@ -15,6 +16,8 @@ namespace WebApp
 {
     public class Startup(IConfiguration configuration)
     {
+        private readonly string _crosPolicy = "_myCrossPolicy";
+        
         private IConfiguration Configuration { get; } = configuration;
 
         // This method gets called by the runtime. Use this method to add services to the container.
@@ -36,6 +39,18 @@ namespace WebApp
             
             services.AddControllersWithViews();
             services.AddRazorPages();
+
+            // https://learn.microsoft.com/en-us/aspnet/core/security/cors?view=aspnetcore-8.0
+            services.AddCors(options =>
+            {
+                options.AddPolicy(_crosPolicy, policy =>
+                {
+                    policy.WithOrigins("http://localhost:5173")
+                        .AllowAnyHeader()
+                        .AllowAnyMethod()
+                        .AllowAnyOrigin();
+                });
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -58,6 +73,8 @@ namespace WebApp
 
             app.UseRouting();
 
+            app.UseCors(_crosPolicy);
+            
             app.UseAuthentication();
             app.UseAuthorization();
 
