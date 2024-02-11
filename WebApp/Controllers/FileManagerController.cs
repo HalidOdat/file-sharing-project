@@ -1,3 +1,4 @@
+using System;
 using System.Net;
 using System.Threading.Tasks;
 using Domain.Model;
@@ -7,22 +8,23 @@ using Services.Interface;
 
 namespace WebApp.Controllers;
 
+[Route("v1/file")]
 [ApiController]
 public class FileManagerController(IFileManager fileManager) : Controller
 {
     [HttpPost]
-    [Route("uploadfile")]
-    public async Task<IActionResult> UploadFile([FromForm] FileModel file)
+    [Route("upload")]
+    public async Task<IActionResult> UploadFile([FromForm] FileFormModel fileForm)
     {
-        var result = await fileManager.UploadFile(file);
+        var result = await fileManager.UploadFile(fileForm);
         return Ok(result);
     }
 
     [HttpGet]
-    [Route("downloadfile")]
-    public async Task<IActionResult> DownloadFile(string fileName)
+    [Route("download")]
+    public async Task<IActionResult> DownloadFile(Guid id)
     {
-        var result = await fileManager.DownloadFile(fileName);
+        var result = await fileManager.DownloadFile(id);
         return File(result.Item1, result.Item2, result.Item2);
     }
 

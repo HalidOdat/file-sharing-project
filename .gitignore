@@ -1,2 +1,5 @@
 **/bin/
 **/obj/
+
+# Don't include developement notes in git history.
+notes.md

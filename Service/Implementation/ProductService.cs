@@ -2,27 +2,20 @@
 using System.Collections.Generic;
 using Domain;
 using Repository;
+using Repository.Interface;
 using Services.Interface;
 
-namespace Services.Implementation
+namespace Services.Implementation;
+
+public class ProductService(IRepository<Product> productRepository) : IProductService
 {
-    public class ProductService : IProductService
+    public IEnumerable<Product> GetAllProducts()
     {
-        private readonly IRepository<Product> _productRepository;
-        
-        public ProductService(IRepository<Product> productRepository)
-        {
-            _productRepository = productRepository;
-        }
+        return productRepository.GetAll();
+    }
 
-        public IEnumerable<Product> GetAllProducts()
-        {
-            return this._productRepository.GetAll();
-        }
-
-        public Product GetById(Guid id)
-        {
-            return this._productRepository.GetById(id);
-        }
+    public Product GetById(Guid id)
+    {
+        return productRepository.GetById(id);
     }
 }

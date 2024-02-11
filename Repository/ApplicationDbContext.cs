@@ -5,22 +5,24 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Repository
 {
-    public class ApplicationDbContext : IdentityDbContext<CustomUser>
+    public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
+        : IdentityDbContext<CustomUser>(options)
     {
         
         DbSet<Product> Products { get; set; }
+        DbSet<FileModel> FileModels { get; set; }
 
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
-        {
-            
-        }
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
             
             builder.Entity<Product>()
                 .Property(z => z.Id)
-                .ValueGeneratedOnAdd(); //i think no need of this
+                .ValueGeneratedOnAdd();
+            
+            builder.Entity<FileModel>()
+                .Property(z => z.Id)
+                .ValueGeneratedOnAdd();
         }
     }
 }

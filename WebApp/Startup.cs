@@ -7,6 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Repository;
 using Repository.Implementation;
+using Repository.Interface;
 using Services.Implementation;
 using Services.Interface;
 
@@ -14,7 +15,7 @@ namespace WebApp
 {
     public class Startup(IConfiguration configuration)
     {
-        public IConfiguration Configuration { get; } = configuration;
+        private IConfiguration Configuration { get; } = configuration;
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -27,6 +28,7 @@ namespace WebApp
                 .AddEntityFrameworkStores<ApplicationDbContext>();
             
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+            services.AddScoped(typeof(IFileModelRepository), typeof(FileModelRepository));
             
             services.AddTransient<IProductService, ProductService>();
             services.AddTransient<IFileManager, FileManager>();
