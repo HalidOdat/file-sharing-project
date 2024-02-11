@@ -1,10 +1,10 @@
 <script lang="ts">
-  import axios from "axios";
-  import type { AxiosProgressEvent } from "axios";
+  import axios, { type AxiosProgressEvent } from "axios";
   import { ProgressBar } from "@skeletonlabs/skeleton";
-  import { HighlightAuto, LineNumbers } from "svelte-highlight";
   import atomOneDark from "svelte-highlight/styles/atom-one-dark";
   import AppBarState from "../../stores/AppBarState.js";
+  import Display from "$lib/Display.svelte";
+  import download from "svelte-awesome/icons/download";
 
   export let data;
 
@@ -28,6 +28,8 @@
       link.download = response.data.name;
       link.click();
     };
+    $AppBarState.icon = download;
+    $AppBarState.text = "Download";
     return response;
   };
 
@@ -41,9 +43,7 @@
 {#await promise}
   <ProgressBar label="Progress Bar" value={progress} max={100} />
 {:then response}
-  <HighlightAuto code={atob(response.data.content)} let:highlighted>
-    <LineNumbers {highlighted} />
-  </HighlightAuto>
+  <Display data={{ content: response.data.content, contentType: response.data.contentType }} />
 {:catch error}
   <p style="color: red">{error.message}</p>
 {/await}
