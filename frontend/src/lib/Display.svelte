@@ -11,7 +11,7 @@
 
 {#if data.contentType.startsWith("text") || data.contentType === "application/json"}
   <HighlightAuto code={atob(data.content)} let:highlighted>
-    <LineNumbers {highlighted} />
+    <LineNumbers {highlighted} wrapLines={true} />
   </HighlightAuto>
 {:else if data.contentType.startsWith("image")}
   <img src={`data:${data.contentType};base64,${data.content}`} alt="" srcset="" />

@@ -23,7 +23,7 @@ export default {
       themes: {
         preset: [
           { name: "skeleton", enhancements: true },
-          { name: "modern", enhancements: true },
+          // { name: "modern", enhancements: true },
           { name: "crimson", enhancements: true },
         ],
       }

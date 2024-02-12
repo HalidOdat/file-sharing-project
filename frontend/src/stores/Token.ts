@@ -1,4 +1,5 @@
 import { browser } from "$app/environment";
+import { writable } from "svelte/store";
 
 export const getToken = (): string | null => {
     if (browser) {
@@ -9,11 +10,9 @@ export const getToken = (): string | null => {
     return null
 }
 
-export const getUserEmail = (): string | null => {
+export const email = writable(((): string | null => {
     if (browser) {
-        const token = sessionStorage.getItem("email");
-        return token;
+        return sessionStorage.getItem("email")
     }
-
-    return null
-}
+    return null;
+})())

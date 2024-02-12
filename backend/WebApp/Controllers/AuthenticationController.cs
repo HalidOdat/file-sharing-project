@@ -18,7 +18,7 @@ namespace WebApp.Controllers;
 
 [ApiController]
 [Route("api/v1/authenticate")]
-public class AuthenticateController(UserManager<ApplicationUser> userManager, IConfiguration configuration)
+public class AuthenticateController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, IConfiguration configuration)
     : ControllerBase
 {
     private IActionResult CreateAccessToken(ApplicationUser user)
@@ -76,5 +76,13 @@ public class AuthenticateController(UserManager<ApplicationUser> userManager, IC
             return StatusCode(StatusCodes.Status500InternalServerError, new AuthResponse { Status = "Error", Message = "User creation failed! Please check user details and try again." });
         
         return CreateAccessToken(user);
+    }
+    
+    [HttpPost]
+    [Route("logout")]
+    public async Task<IActionResult> Logout()
+    {
+        await signInManager.SignOutAsync();
+        return Ok();
     }
 }

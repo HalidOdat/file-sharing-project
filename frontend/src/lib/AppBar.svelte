@@ -6,9 +6,8 @@
   import AppBarState from "../stores/AppBarState";
   import plus from "svelte-awesome/icons/plus";
   import { goto } from "$app/navigation";
-  import { getToken, getUserEmail } from "../stores/Token";
+  import { email, getToken } from "../stores/Token";
   import { page } from "$app/stores";
-  import leaf from "svelte-awesome/icons/leaf";
 
   const goToUpload = () => {
     window.location = "/";
@@ -37,12 +36,8 @@
     {#if $page.url.pathname == "/files"}
       <LightSwitch />
     {/if}
-    {#if token}
-      <Avatar
-        initials={getUserEmail()?.substring(0, 2)}
-        width="w-12"
-        on:click={() => goto("/files")}
-      />
+    {#if $email}
+      <Avatar initials={$email.substring(0, 2)} width="w-12" on:click={() => goto("/files")} />
     {:else}
       <Avatar initials={"?"} width="w-12" on:click={() => goto("/login")} />
     {/if}

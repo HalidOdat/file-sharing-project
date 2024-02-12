@@ -27,7 +27,7 @@
   let promise: Promise<string> | null = null;
   let preview: Promise<{ content: string; contentType: string }> | null = null;
 
-  const onChangeHandler = (e: Event): void => {
+  const onChangeHandler = () => {
     let file = files.item(0);
     preview = getPreviewData(file);
 

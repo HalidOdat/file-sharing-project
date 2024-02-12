@@ -4,16 +4,17 @@
   import { book } from "svelte-awesome/icons";
   import { goto } from "$app/navigation";
   import { api } from "../../Server";
+  import { email } from "../../stores/Token";
 
-  let email = "";
-  let password = "";
+  let emailValue = "";
+  let passwordValue = "";
 
   $AppBarState.onClick = async () => {
     $AppBarState.icon = { data: spinner, pulse: true };
 
     let response = await api.postForm("/api/v1/authenticate/register", {
-      email,
-      password
+      email: emailValue,
+      password: passwordValue
     });
 
     if (response.status != 200) {
@@ -21,7 +22,8 @@
     }
 
     sessionStorage.setItem("token", response.data.token);
-    sessionStorage.setItem("email", email);
+    sessionStorage.setItem("email", emailValue);
+    $email = emailValue;
 
     console.log(response);
 
@@ -36,7 +38,7 @@
     <input
       class="input variant-form-material text-xl p-4"
       title="Input (email)"
-      bind:value={email}
+      bind:value={emailValue}
       type="email"
       placeholder="john@example.com"
       autocomplete="email"
@@ -47,7 +49,7 @@
   <div class="input-group input-group-divider grid-cols-[1fr_auto] my-2">
     <input
       class="input variant-form-material text-xl p-4"
-      bind:value={password}
+      bind:value={passwordValue}
       title="Input (password)"
       type="password"
       placeholder="Enter Password..."
