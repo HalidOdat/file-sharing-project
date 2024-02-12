@@ -57,4 +57,7 @@
     />
     <!-- <a href="/" title="Username already in use.">(icon)</a> -->
   </div>
+  <span class="text-amber-200">
+    If you already have an account <a class="text-primary-400" href="/login">login here</a>!
+  </span>
 </form>

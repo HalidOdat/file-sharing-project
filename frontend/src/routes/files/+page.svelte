@@ -1,13 +1,21 @@
 <script lang="ts">
-  import axios, { type AxiosProgressEvent } from "axios";
+  import axios from "axios";
   import AppBarState from "../../stores/AppBarState";
   import { getToken } from "../../stores/Token";
   import { Icon } from "svelte-awesome";
   import trash from "svelte-awesome/icons/trash";
+  import { goto } from "$app/navigation";
+  import { browser } from "$app/environment";
+  import leaf from "svelte-awesome/icons/leaf";
 
   let token = getToken();
+  if (token === null && browser) {
+    goto("/login");
+  }
 
-  $AppBarState.onClick = undefined;
+  $AppBarState.onClick = () => {};
+  $AppBarState.icon = { data: leaf };
+  $AppBarState.text = "LogOut";
 
   const location = `https://localhost:5001/v1/api/file/getAll`;
   const getFileList = async (): Promise<object[]> => {
@@ -62,8 +70,6 @@
     }
   };
 </script>
-
-<!-- {#each Array(1) as _, index (index)}{/each} -->
 
 {#await promise}
   <section class="card w-full">

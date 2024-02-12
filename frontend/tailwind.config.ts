@@ -14,9 +14,6 @@ export default {
       '../**/*.{html,js,svelte,ts}'
     ),
   ],
-  safelist: [{
-    pattern: /hljs-.+/,
-  }],
   theme: {
     extend: {},
   },

@@ -1,10 +1,9 @@
 <script lang="ts">
   import spinner from "svelte-awesome/icons/spinner";
   import AppBarState from "../../stores/AppBarState";
-  import { book } from "svelte-awesome/icons";
   import axios from "axios";
   import { goto } from "$app/navigation";
-  import apple from "svelte-awesome/icons/apple";
+  import userCircleO from "svelte-awesome/icons/userCircleO";
 
   let email = "";
   let password = "";
@@ -31,7 +30,7 @@
 
     goto("/");
   };
-  $AppBarState.icon = { data: apple };
+  $AppBarState.icon = { data: userCircleO };
   $AppBarState.text = "Login!";
 </script>
 
@@ -58,4 +57,7 @@
     />
     <!-- <a href="/" title="Username already in use.">(icon)</a> -->
   </div>
+  <span class="text-amber-200">
+    If you don't have an account <a class="text-primary-400" href="/register">register here</a>!
+  </span>
 </form>

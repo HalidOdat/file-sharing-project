@@ -8,10 +8,15 @@
   import { getToken } from "../stores/Token";
   import { getToastStore } from "@skeletonlabs/skeleton";
   import upload from "svelte-awesome/icons/upload";
+  import { goto } from "$app/navigation";
+  import { browser } from "$app/environment";
 
   const toastStore = getToastStore();
 
   let token = getToken();
+  if (token === null && browser) {
+    goto("/login");
+  }
 
   $AppBarState.onClick = undefined;
 
