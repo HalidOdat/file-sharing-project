@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Domain.Dto;
 using Domain.Identity;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -84,8 +85,7 @@ public class AccountController(
 
         var result = await signInManager.PasswordSignInAsync(model.Email, model.Password, true, true);
 
-        if (result.Succeeded)
-        {
+       {
             await userManager.AddClaimAsync(user, new Claim("UserRole", "Admin"));
             return RedirectToAction("Index", "Home");
         }

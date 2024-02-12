@@ -1,4 +1,5 @@
 using System.Text;
+using AutoMapper;
 using Domain.Identity;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -63,6 +64,15 @@ namespace WebApp
             services.AddScoped(typeof(IFileModelRepository), typeof(FileModelRepository));
             
             services.AddTransient<IFileManager, FileManager>();
+            
+            // Auto Mapper Configurations
+            var mapperConfig = new MapperConfiguration(mc =>
+            {
+                mc.AddProfile(new MappingProfile());
+            });
+
+            IMapper mapper = mapperConfig.CreateMapper();
+            services.AddSingleton(mapper);
             
             services.AddControllers();
             services.AddSwaggerGen(c =>

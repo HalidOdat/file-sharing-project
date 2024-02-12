@@ -8,12 +8,12 @@ namespace Repository
     public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
         : IdentityDbContext<ApplicationUser>(options)
     {
-        DbSet<FileModel> FileModels { get; set; }
+        public DbSet<FileModel> FileModels { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
-            
+
             builder.Entity<FileModel>()
                 .Property(z => z.Id)
                 .ValueGeneratedOnAdd();

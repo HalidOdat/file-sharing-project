@@ -2,6 +2,7 @@ using System;
 using System.Data;
 using System.Threading.Tasks;
 using Domain;
+using Domain.Identity;
 using Domain.Model;
 using Repository.Interface;
 using Service.Interface;
@@ -10,7 +11,7 @@ namespace Service.Implementation;
 
 public class FileManager(IFileModelRepository repository) : IFileManager
 {
-    public async Task<string> UploadFile(FileFormModel fileForm)
+    public async Task<FileModel> UploadFile(FileFormModel fileForm, ApplicationUser user)
     {
         var length = fileForm.FormFile.Length;
         var bytes = new byte[length];
@@ -24,12 +25,13 @@ public class FileManager(IFileModelRepository repository) : IFileManager
             Name = fileForm.FileName,
             Description = "The description",
             ContentType = fileForm.FormFile.ContentType,
-            Content = bytes
+            Content = bytes,
+            Size = bytes.Length,
+            Creator = user,
         };
 
         repository.Insert(model);
-        
-        return model.Id.ToString();
+        return model;
     }
 
     public async Task<FileModel> DownloadFile(Guid id)
@@ -40,5 +42,10 @@ public class FileManager(IFileModelRepository repository) : IFileManager
             throw new NoNullAllowedException();
         }
         return model;
+    }
+
+    public void DeleteFile(FileModel file)
+    {
+        repository.Delete(file);
     }
 }

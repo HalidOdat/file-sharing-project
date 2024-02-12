@@ -4,6 +4,12 @@
   import { AppBar } from "@skeletonlabs/skeleton";
   import { Avatar } from "@skeletonlabs/skeleton";
   import AppBarState from "../stores/AppBarState";
+  import plus from "svelte-awesome/icons/plus";
+  import { goto } from "$app/navigation";
+
+  const goToUpload = () => {
+    window.location = "/";
+  };
 </script>
 
 <AppBar gridColumns="grid-cols-3" slotDefault="place-self-center" slotTrail="place-content-end">
@@ -19,6 +25,10 @@
   {/if}
 
   <svelte:fragment slot="trail">
-    <Avatar src="https://i.pravatar.cc/" width="w-12" />
+    <button type="button" class="btn variant-filled p-3 px-9" on:click={goToUpload}>
+      <Icon data={plus} scale={1.5} />
+      <span class="font-bold font-mono">New </span>
+    </button>
+    <Avatar initials="JD" width="w-12" on:click={() => goto("/files")} />
   </svelte:fragment>
 </AppBar>
