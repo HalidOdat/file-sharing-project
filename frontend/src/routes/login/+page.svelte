@@ -21,6 +21,7 @@
     }
 
     sessionStorage.setItem("token", response.data.token);
+    sessionStorage.setItem("email", email);
 
     console.log(response);
 

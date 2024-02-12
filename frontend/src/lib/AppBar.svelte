@@ -6,7 +6,7 @@
   import AppBarState from "../stores/AppBarState";
   import plus from "svelte-awesome/icons/plus";
   import { goto } from "$app/navigation";
-  import { getToken } from "../stores/Token";
+  import { getToken, getUserEmail } from "../stores/Token";
   import { page } from "$app/stores";
   import leaf from "svelte-awesome/icons/leaf";
 
@@ -38,9 +38,13 @@
       <LightSwitch />
     {/if}
     {#if token}
-      <Avatar initials={"?"} width="w-12" on:click={() => goto("/login")} />
+      <Avatar
+        initials={getUserEmail()?.substring(0, 2)}
+        width="w-12"
+        on:click={() => goto("/files")}
+      />
     {:else}
-      <Avatar initials={""} width="w-12" on:click={() => goto("/files")} />
+      <Avatar initials={"?"} width="w-12" on:click={() => goto("/login")} />
     {/if}
   </svelte:fragment>
 </AppBar>
