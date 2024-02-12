@@ -2,6 +2,7 @@
 
     <PropertyGroup>
         <TargetFramework>netcoreapp8.0</TargetFramework>
+        <RootNamespace>Service</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>

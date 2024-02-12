@@ -6,12 +6,12 @@
   import Display from "$lib/Display.svelte";
   import download from "svelte-awesome/icons/download";
 
-  export let data;
+  export let data: { slug: string };
 
   const location = `https://localhost:5001/v1/api/file/download`;
 
   let progress = 0;
-  const getFile = async (id: string): Promise<object> => {
+  const getFile = async (id: string): Promise<{ content: string; contentType: string }> => {
     let response = await axios.request({
       method: "get",
       url: `${location}?id=${id}`,
@@ -28,9 +28,9 @@
       link.download = response.data.name;
       link.click();
     };
-    $AppBarState.icon = download;
+    $AppBarState.icon = { data: download };
     $AppBarState.text = "Download";
-    return response;
+    return response.data;
   };
 
   let promise = getFile(data.slug);
@@ -43,7 +43,7 @@
 {#await promise}
   <ProgressBar label="Progress Bar" value={progress} max={100} />
 {:then response}
-  <Display data={{ content: response.data.content, contentType: response.data.contentType }} />
+  <Display data={{ content: response.content, contentType: response.contentType }} />
 {:catch error}
   <p style="color: red">{error.message}</p>
 {/await}

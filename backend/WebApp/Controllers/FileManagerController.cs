@@ -1,8 +1,9 @@
 using System;
 using System.Threading.Tasks;
 using Domain.Model;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Services.Interface;
+using Service.Interface;
 
 namespace WebApp.Controllers;
 
@@ -13,6 +14,7 @@ public class FileManagerController(IFileManager fileManager) : Controller
 {
     [HttpPost]
     [Route("upload")]
+    [Authorize(Roles = null)]
     public async Task<IActionResult> UploadFile([FromForm] FileFormModel fileForm)
     {
         var result = await fileManager.UploadFile(fileForm);

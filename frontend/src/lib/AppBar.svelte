@@ -11,7 +11,7 @@
 
   {#if $AppBarState.onClick}
     <button type="button" class="btn variant-filled p-3 px-9" on:click={$AppBarState.onClick}>
-      <Icon data={$AppBarState.icon} scale={1.5} />
+      <Icon {...$AppBarState.icon} scale={1.5} />
       <span class="font-bold font-mono">{$AppBarState.text}</span>
     </button>
   {:else}

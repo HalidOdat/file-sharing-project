@@ -9,19 +9,19 @@ using Microsoft.AspNetCore.Mvc;
 namespace WebApp.Controllers;
 
 public class AccountController(
-    UserManager<CustomUser> userManager,
-    SignInManager<CustomUser> signInManager)
+    UserManager<ApplicationUser> userManager,
+    SignInManager<ApplicationUser> signInManager)
     : Controller
 {
     [HttpGet]
     public IActionResult Register()
     {
-        CustomUserRegistrationDto model = new CustomUserRegistrationDto();
+        RegisterModel model = new RegisterModel();
         return View(model);
     }
 
     [HttpPost, AllowAnonymous]
-    public async Task<IActionResult> Register(CustomUserRegistrationDto request)
+    public async Task<IActionResult> Register(RegisterModel request)
     {
         if (!ModelState.IsValid) return View(request);
         var userCheck = await userManager.FindByEmailAsync(request.Email);
@@ -31,47 +31,41 @@ public class AccountController(
             return View(request);
         }
 
-        var user = new CustomUser
+        var user = new ApplicationUser
         {
-            Name = request.Name,
-            Surname = request.LastName,
             UserName = request.Email,
             NormalizedUserName = request.Email,
             Email = request.Email,
             EmailConfirmed = true,
-            PhoneNumberConfirmed = true,
-            PhoneNumber = request.PhoneNumber
         };
         var result = await userManager.CreateAsync(user, request.Password);
         if (result.Succeeded)
         {
             return RedirectToAction("Login");
         }
-        else
-        {
-            if (result.Errors.Any())
-            {
-                foreach (var error in result.Errors)
-                {
-                    ModelState.AddModelError("message", error.Description);
-                }
-            }
 
-            return View(request);
+        if (result.Errors.Any())
+        {
+            foreach (var error in result.Errors)
+            {
+                ModelState.AddModelError("message", error.Description);
+            }
         }
+
+        return View(request);
     }
 
     [HttpGet]
     [AllowAnonymous]
     public IActionResult Login()
     {
-        CustomUserLoginDto model = new CustomUserLoginDto();
+        LoginModel model = new LoginModel();
         return View(model);
     }
 
     [HttpPost]
     [AllowAnonymous]
-    public async Task<IActionResult> Login(CustomUserLoginDto model)
+    public async Task<IActionResult> Login(LoginModel model)
     {
         if (!ModelState.IsValid) return View(model);
         var user = await userManager.FindByEmailAsync(model.Email);
@@ -88,7 +82,7 @@ public class AccountController(
 
         }
 
-        var result = await signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, true);
+        var result = await signInManager.PasswordSignInAsync(model.Email, model.Password, true, true);
 
         if (result.Succeeded)
         {

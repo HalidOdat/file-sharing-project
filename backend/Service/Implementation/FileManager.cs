@@ -1,51 +1,17 @@
 using System;
 using System.Data;
-using System.IO;
 using System.Threading.Tasks;
 using Domain;
 using Domain.Model;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.StaticFiles;
-using Repository;
 using Repository.Interface;
-using Services.Interface;
+using Service.Interface;
 
-namespace Services.Implementation;
-
-public static class Common
-{
-    public static string GetCurrentDirectory()
-    {
-        var result = Directory.GetCurrentDirectory();
-        return result;
-    }
-    public static string GetStaticContentDirectory()
-    {
-        var result = Path.Combine(Directory.GetCurrentDirectory(), "Uploads/StaticContent/");
-        if (!Directory.Exists(result))
-        {
-            Directory.CreateDirectory(result);
-        }
-        return result;
-    }
-    public static string GetFilePath(string fileName)
-    {
-        var contentDirectory = GetStaticContentDirectory();
-        var result = Path.Combine(contentDirectory, fileName);
-        return result;
-    }
-}
+namespace Service.Implementation;
 
 public class FileManager(IFileModelRepository repository) : IFileManager
 {
     public async Task<string> UploadFile(FileFormModel fileForm)
     {
-        FileInfo fileInfo = new FileInfo(fileForm.FileName);
-        var fileName = fileForm.FileName + "_" + DateTime.Now.Ticks + fileInfo.Extension;
-        var filePath = Common.GetFilePath(fileName);
-        await using var fileStream = new FileStream(filePath, FileMode.Create);
-        await fileForm.FormFile.CopyToAsync(fileStream);
-        
         var length = fileForm.FormFile.Length;
         var bytes = new byte[length];
         await using (var stream = fileForm.FormFile.OpenReadStream())
@@ -73,16 +39,6 @@ public class FileManager(IFileModelRepository repository) : IFileManager
         {
             throw new NoNullAllowedException();
         }
-        
-        
-        /*
-        var filePath = Common.GetFilePath(fileName);
-        var provider = new FileExtensionContentTypeProvider();
-        if (!provider.TryGetContentType(filePath, out var contentType))
-        {
-            contentType = "application/octet-stream";
-        }
-        var bytes = await File.ReadAllBytesAsync(filePath);*/
         return model;
     }
 }

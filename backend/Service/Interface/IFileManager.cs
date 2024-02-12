@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using Domain;
 using Domain.Model;
 
-namespace Services.Interface;
+namespace Service.Interface;
 
 public interface IFileManager
 {

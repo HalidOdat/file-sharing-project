@@ -16,5 +16,5 @@
 {:else if data.contentType.startsWith("image")}
   <img src={`data:${data.contentType};base64,${data.content}`} alt="" srcset="" />
 {:else}
-  <h2 class="font-bold text-3xl text-center">Can't render the file ({data.contentType})...</h2>
+  <!-- <h2 class="font-bold text-3xl text-center">Can't render the file ({data.contentType})...</h2> -->
 {/if}

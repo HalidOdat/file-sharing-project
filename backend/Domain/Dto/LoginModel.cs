@@ -2,7 +2,7 @@
 
 namespace Domain.Identity
 {
-    public class CustomUserLoginDto
+    public class LoginModel
     {
         [Required(ErrorMessage = "Email is required")]
         [EmailAddress(ErrorMessage = "Invalid email address")]
@@ -10,7 +10,5 @@ namespace Domain.Identity
         [Required(ErrorMessage = "Password is required")]
         [DataType(DataType.Password)]
         public string Password { get; set; }
-        [Display(Name = "Remember me")]
-        public bool RememberMe{ get; set; }
     }
 }
