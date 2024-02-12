@@ -1,5 +1,4 @@
 <script lang="ts">
-  import axios from "axios";
   import AppBarState from "../../stores/AppBarState";
   import { getToken } from "../../stores/Token";
   import { Icon } from "svelte-awesome";
@@ -7,6 +6,7 @@
   import { goto } from "$app/navigation";
   import { browser } from "$app/environment";
   import leaf from "svelte-awesome/icons/leaf";
+  import { api } from "../../Server";
 
   let token = getToken();
   if (token === null && browser) {
@@ -17,11 +17,10 @@
   $AppBarState.icon = { data: leaf };
   $AppBarState.text = "LogOut";
 
-  const location = `https://localhost:5001/v1/api/file/getAll`;
   const getFileList = async (): Promise<object[]> => {
-    let response = await axios.request({
+    let response = await api.request({
       method: "post",
-      url: location,
+      url: "/v1/api/file/getAll",
       headers: {
         Authorization: `Bearer ${token}`
       }
@@ -41,10 +40,9 @@
   const deleteItem = async (id: string) => {
     let formData = new FormData();
     formData.append("id", id);
-    const location = `https://localhost:5001/v1/api/file/delete`;
-    let response = await axios.request({
+    let response = await api.request({
       method: "delete",
-      url: location,
+      url: "/v1/api/file/delete",
       data: formData,
       headers: {
         Authorization: `Bearer ${token}`

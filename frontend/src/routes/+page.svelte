@@ -1,5 +1,5 @@
 <script lang="ts">
-  import axios, { type AxiosProgressEvent } from "axios";
+  import { type AxiosProgressEvent } from "axios";
   import FileDrop from "$lib/FileDrop.svelte";
   import { ProgressBar } from "@skeletonlabs/skeleton";
   import Display from "$lib/Display.svelte";
@@ -10,6 +10,7 @@
   import upload from "svelte-awesome/icons/upload";
   import { goto } from "$app/navigation";
   import { browser } from "$app/environment";
+  import { api } from "../Server";
 
   const toastStore = getToastStore();
 
@@ -25,8 +26,6 @@
   let fileUrl = "";
   let promise: Promise<string> | null = null;
   let preview: Promise<{ content: string; contentType: string }> | null = null;
-
-  const location = `https://localhost:5001/v1/api/file/upload`;
 
   const onChangeHandler = (e: Event): void => {
     let file = files.item(0);
@@ -60,9 +59,9 @@
     formData.append("fileName", file.name);
     formData.append("formFile", file);
 
-    let response = await axios.request({
+    let response = await api.request({
       method: "post",
-      url: location,
+      url: "/v1/api/file/upload",
       data: formData,
       headers: {
         Authorization: `Bearer ${token}`

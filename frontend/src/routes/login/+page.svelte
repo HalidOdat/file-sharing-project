@@ -1,9 +1,9 @@
 <script lang="ts">
   import spinner from "svelte-awesome/icons/spinner";
   import AppBarState from "../../stores/AppBarState";
-  import axios from "axios";
   import { goto } from "$app/navigation";
   import userCircleO from "svelte-awesome/icons/userCircleO";
+  import { api } from "../../Server";
 
   let email = "";
   let password = "";
@@ -11,11 +11,7 @@
   $AppBarState.onClick = async () => {
     $AppBarState.icon = { data: spinner, pulse: true };
 
-    const api = axios.create({
-      baseURL: "https://localhost:5001/api/v1"
-    });
-
-    let response = await api.postForm("/authenticate/login", {
+    let response = await api.postForm("/api/v1/authenticate/login", {
       email,
       password
     });
