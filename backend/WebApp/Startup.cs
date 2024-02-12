@@ -37,6 +37,16 @@ namespace WebApp
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
             
+            // loosen the password requirements (by a lot)
+            services.Configure<IdentityOptions>(options =>
+            {
+                options.Password.RequireDigit = false;
+                options.Password.RequiredLength = 6;
+                options.Password.RequireLowercase = false;
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequireUppercase = false;
+            });
+            
             // Adding Authentication
             services.AddAuthentication(options =>
             {
@@ -85,7 +95,7 @@ namespace WebApp
             {
                 options.AddPolicy(_crosPolicy, policy =>
                 {
-                    policy.WithOrigins("http://localhost:5173")
+                    policy.WithOrigins("http://localhost:5173", "https://filesharing-is.vercel.app")
                         .AllowAnyHeader()
                         .AllowAnyMethod()
                         .AllowAnyOrigin();

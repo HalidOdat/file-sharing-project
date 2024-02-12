@@ -8,3 +8,12 @@ export const getToken = (): string | null => {
 
     return null
 }
+
+export const getUserEmail = (): string | null => {
+    if (browser) {
+        const token = sessionStorage.getItem("email");
+        return token;
+    }
+
+    return null
+}
