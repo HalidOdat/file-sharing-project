@@ -1,20 +1,19 @@
 <script lang="ts">
-  import axios, { type AxiosProgressEvent } from "axios";
+  import { type AxiosProgressEvent } from "axios";
   import { ProgressBar } from "@skeletonlabs/skeleton";
   import atomOneDark from "svelte-highlight/styles/atom-one-dark";
   import AppBarState from "../../stores/AppBarState.js";
   import Display from "$lib/Display.svelte";
   import download from "svelte-awesome/icons/download";
+  import { api } from "../../Server.js";
 
   export let data: { slug: string };
 
-  const location = `https://localhost:5001/v1/api/file/download`;
-
   let progress = 0;
   const getFile = async (id: string): Promise<{ content: string; contentType: string }> => {
-    let response = await axios.request({
+    let response = await api.request({
       method: "get",
-      url: `${location}?id=${id}`,
+      url: `/v1/api/file/download?id=${id}`,
       onUploadProgress: (p: AxiosProgressEvent) => {
         console.log(p);
         progress = Number(p.progress) * 100;
