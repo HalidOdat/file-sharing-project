@@ -106,14 +106,14 @@
         />
       </div>
     {:catch error}
-      <!-- <p style="color: red">{error.message}</p> -->
+      <h1 class="text-error-800 text-center">Error: {error.message}</h1>
     {/await}
   {/if}
 
   {#await preview}
     <section class="card w-full">
       <div class="p-4 space-y-4 px-20">
-        {#each Array(1) as _, index (index)}
+        {#each Array(2) as _, index (index)}
           <div class="placeholder animate-pulse" />
           <div class="grid grid-cols-3 gap-8">
             <div class="placeholder animate-pulse" />
@@ -132,6 +132,6 @@
   {:then resolvedData}
     <Display data={resolvedData} />
   {:catch error}
-    <!-- <p style="color: red">Cou{error.message}</p> -->
+    <h1 class="text-error-800 text-center">Error: {error.message}</h1>
   {/await}
 {/if}
